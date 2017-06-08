@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="zed_namespace"     default="camera"/>
+  <arg name="point_cloud_topic" default="$(arg zed_namespace)/point_cloud/cloud_registered"/>
+
+  <include file="$(find pcl_tutorials)/launch/zed.launch">
+    <arg name="zed_namespace"   value="camera"/>
+  </include>
+
+  <node pkg="pcl_tutorials"   type="example_voxelgrid"  name="example_voxelgrid_node">
+    <remap from="input"   to="$(arg point_cloud_topic)"/>
+    <remap from="output"  to="point_cloud_filtered"/>
+  </node>
+
+</launch>

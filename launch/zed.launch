@@ -1,0 +1,90 @@
+<launch>
+  <!-- Runs zed stereo camera-->
+
+  <!-- ===================================================================== -->
+  <!-- CONSTANTS -->
+  <arg name="pi_half"         value="1.5707963267948966"/>
+  <arg name="pi"              value="3.1415926535897932"/>
+  <arg name="optical_rotate"  value="0 0 0 -$(arg pi_half) 0 -$(arg pi_half)"/>
+  <!-- ===================================================================== -->
+
+
+  <!-- GENERAL ARGUMENTS -->
+  <arg name="zed_namespace"       default="camera"/>
+  <arg name="base_frame_id"       default="camera_link"/>
+  <!-- ===================================================================== -->
+
+  <!-- ZED ARGUMENTS -->
+  <arg name="zed_id"                  default="0"/>
+  <!-- Select ZED camera resolution 
+       '0': HD2K, '1': HD1080, '2': HD720, '3': VGA -->
+  <arg name="zed_resolution"          default="2"/>
+  <!-- Select depth map quality 
+       '0': NONE, '1': PERFORMANCE, '2': MEDIUM, '3': QUALITY -->
+  <arg name="zed_quality"             default="1"/>
+  <!-- Select depth sensing mode 
+       '0': FILL, '1': STANDARD -->
+  <arg name="zed_sensing_mode"        default="1"/>
+  <!-- Set ZED camera video framerate -->
+  <arg name="zed_frame_rate"          default="30"/>
+  <!-- Convert 32bit depth in meters to 16bit in millimeters 
+       '0': 32bit float meters, '1': 16bit uchar millimeters-->
+  <arg name="zed_openni_depth_mode"   default="1"/>
+  <!-- The confidence value is mapped between 0 (high confidence threshold, 
+       sparse data) and 100 (low confidence threshold, dense data). -->
+  <arg name="zed_confidence"          default="100"/>
+
+  <!-- STATIC TRANSFORMATIONS -->
+  <node pkg="tf" type="static_transform_publisher" 
+        name="base_to_zed_initial"
+        args="$(arg optical_rotate) $(arg base_frame_id) zed_initial_frame 100"/>
+  
+  <node pkg="tf" type="static_transform_publisher"
+        name="zed_current_to_left"
+        args="0 0 0 0 0 0 zed_current_frame ZED_left_camera 100"/>
+
+  <!-- RUN ZED WRAPPER -->
+  <group ns="$(arg zed_namespace)">
+
+    <node pkg="zed_wrapper" type="zed_wrapper_node" name="zed_wrapper_node" 
+        output="screen">
+      <param name="zed_id"                value="$(arg zed_id)" />
+
+      <param name="resolution"            value="$(arg zed_resolution)" />
+      <param name="quality"               value="$(arg zed_quality)"/>
+      <param name="sensing_mode"          value="$(arg zed_sensing_mode)"/>
+      <param name="frame_rate"            value="$(arg zed_frame_rate)"/>
+      <param name="openni_depth_mode"     value="$(arg zed_openni_depth_mode)"/>
+      <param name="confidence"            value="$(arg zed_confidence)"/>
+
+      <!-- ROS topic names -->
+      <param name="rgb_topic"             value="rgb/image_rect_color"/>
+      <param name="rgb_raw_topic"         value="rgb/image_raw_color"/>
+      <param name="rgb_cam_info_topic"    value="rgb/camera_info"/>
+
+      <param name="left_topic"            value="left/image_rect_color"/>
+      <param name="left_raw_topic"        value="left/image_raw_color"/>
+      <param name="left_cam_info_topic"   value="left/camera_info"/>
+
+      <param name="right_topic"           value="right/image_rect_color"/>
+      <param name="right_raw_topic"       value="right/image_raw_color"/>
+      <param name="right_cam_info_topic"  value="right/camera_info"/>
+
+      <param name="depth_topic"           value="depth/depth_registered"/>
+      <param name="depth_cam_info_topic"  value="depth/camera_info"/>
+      <param name="point_cloud_topic"     value="point_cloud/cloud_registered"/>
+
+      <param name="odometry_topic"        value="odom"/>
+    </node>
+  </group>
+  <!-- ===================================================================== -->
+
+  <!-- ROS URDF description of the ZED -->
+  <param name="zed_description" textfile="$(find zed_wrapper)/urdf/zed.urdf"/>
+  <node pkg="robot_state_publisher" type="state_publisher" 
+        name="zed_state_publisher">
+    <remap from="robot_description" to="zed_description"/>
+  </node>
+  <!-- ===================================================================== -->
+
+</launch>
