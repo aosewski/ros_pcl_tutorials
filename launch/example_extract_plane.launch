@@ -1,0 +1,19 @@
+<launch>
+
+  <arg name="debug"             default="0"/>
+  <arg name="example_prefix"    default=""                    unless="$(arg debug)"/>
+  <arg name="example_prefix"    default="screen -d -m gdb --args" if="$(arg debug)"/>
+  <arg name="zed_namespace"     default="camera"/>
+  <arg name="point_cloud_topic" default="$(arg zed_namespace)/point_cloud/cloud_registered"/>
+
+  <include file="$(find pcl_tutorials)/launch/zed.launch">
+    <arg name="zed_namespace"   value="camera"/>
+  </include>
+
+  <node pkg="pcl_tutorials"   type="example_extract_plane"  
+        name="example_extract_plane_node" launch-prefix="$(arg example_prefix)">
+    <remap from="input"      to="$(arg point_cloud_topic)"/>
+    <remap from="output"     to="extracted_plane_cloud"/>
+  </node>
+
+</launch>

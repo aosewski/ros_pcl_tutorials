@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
+
 project(pcl_tutorials)
+
+SET(CMAKE_BUILD_TYPE RELEASE)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -157,6 +160,12 @@ target_link_libraries(example_voxelgrid ${LINK_LIBRARIES})
 
 add_executable(example_planarsegmentation src/example_planarsegmentation.cpp)
 target_link_libraries(example_planarsegmentation ${LINK_LIBRARIES})
+
+add_executable(example_extract_plane src/example_extract_plane.cpp)
+target_link_libraries(example_extract_plane ${LINK_LIBRARIES})
+
+add_executable(example_extract_cylinder src/example_extract_cylinder.cpp)
+target_link_libraries(example_extract_cylinder ${LINK_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
