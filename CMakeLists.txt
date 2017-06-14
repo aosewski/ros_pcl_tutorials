@@ -23,6 +23,16 @@ find_package(catkin REQUIRED COMPONENTS
 # find_package(Boost REQUIRED COMPONENTS system)
 find_package(PCL 1.7 REQUIRED)
 
+option(WITH_OPENMP  "Build with OpenMP support for multithreading" ON)
+# add OpenMP support
+if (WITH_OPENMP)
+    find_package(OpenMP QUIET)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${OpenMP_C_FLAGS}")
+    if (NOT OPENMP_FOUND)
+        set(WITH_OPENMP OFF)
+    endif()
+endif()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -166,6 +176,9 @@ target_link_libraries(example_extract_plane ${LINK_LIBRARIES})
 
 add_executable(example_extract_cylinder src/example_extract_cylinder.cpp)
 target_link_libraries(example_extract_cylinder ${LINK_LIBRARIES})
+
+add_executable(example_normal_estim src/example_normal_estim.cpp)
+target_link_libraries(example_normal_estim ${LINK_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
