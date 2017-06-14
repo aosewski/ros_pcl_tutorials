@@ -158,8 +158,8 @@ set(LINK_LIBRARIES
 add_executable(example_voxelgrid src/example_voxelgrid.cpp)
 target_link_libraries(example_voxelgrid ${LINK_LIBRARIES})
 
-add_executable(example_planarsegmentation src/example_planarsegmentation.cpp)
-target_link_libraries(example_planarsegmentation ${LINK_LIBRARIES})
+add_executable(example_planar_segmentation src/example_planar_segmentation.cpp)
+target_link_libraries(example_planar_segmentation ${LINK_LIBRARIES})
 
 add_executable(example_extract_plane src/example_extract_plane.cpp)
 target_link_libraries(example_extract_plane ${LINK_LIBRARIES})

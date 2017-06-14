@@ -7,7 +7,7 @@
     <arg name="zed_namespace"   value="camera"/>
   </include>
 
-  <node pkg="pcl_tutorials"   type="example_planarsegmentation"  
+  <node pkg="pcl_tutorials"   type="example_planar_segmentation"  
         name="example_planar_segm_node">
     <remap from="input"   to="$(arg point_cloud_topic)"/>
     <remap from="output"  to="segmented_planar_coeff"/>
