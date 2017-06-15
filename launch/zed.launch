@@ -31,8 +31,10 @@
        '0': 32bit float meters, '1': 16bit uchar millimeters-->
   <arg name="zed_openni_depth_mode"   default="1"/>
   <!-- The confidence value is mapped between 0 (high confidence threshold, 
-       sparse data) and 100 (low confidence threshold, dense data). -->
-  <arg name="zed_confidence"          default="100"/>
+       sparse data) and 100 (low confidence threshold, dense data). 
+       It is used to filter invalid data (the lower the value, the more data
+       will be filtered.-->
+  <arg name="zed_confidence"          default="60"/>
 
   <!-- STATIC TRANSFORMATIONS -->
   <node pkg="tf" type="static_transform_publisher" 
