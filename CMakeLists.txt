@@ -32,6 +32,7 @@ if (WITH_OPENMP)
     if (NOT OPENMP_FOUND)
         set(WITH_OPENMP OFF)
     endif()
+    message(STATUS  "Building with OpenMP enabled")
 endif()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
