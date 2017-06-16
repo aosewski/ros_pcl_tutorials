@@ -1,0 +1,21 @@
+<launch>
+  <arg name="host"              default="0"/>
+  <!-- specify VoxelGrid leaf size to downsample input point cloud -->
+  <arg name="leaf_size"         default="0"/>
+  <arg name="debug"             default="0"/>
+  <arg name="example_prefix"    default=""                    unless="$(arg debug)"/>
+  <arg name="example_prefix"    default="screen -d -m gdb --args" if="$(arg debug)"/>
+  <arg name="zed_namespace"     default="camera"/>
+  <arg name="point_cloud_topic" default="$(arg zed_namespace)/point_cloud/cloud_registered"/>
+
+  <include unless="$(arg host)" file="$(find pcl_tutorials)/launch/zed.launch">
+    <arg name="zed_namespace"   value="camera"/>
+  </include>
+
+  <node pkg="pcl_tutorials"   type="example_normal_estim"  
+        name="example_normal_estim_node" launch-prefix="$(arg example_prefix)">
+    <param name="leaf_size"   type="double"  value="$(arg leaf_size)"/>
+    
+    <remap from="input"      to="$(arg point_cloud_topic)"/>
+  </node>
+</launch>

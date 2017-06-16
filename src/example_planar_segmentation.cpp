@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h>
-#include <pcl/ros/conversions.h>
+#include <pcl/conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
