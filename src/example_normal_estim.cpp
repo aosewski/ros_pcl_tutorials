@@ -139,8 +139,8 @@ private:
     m_viewer_.removePointCloud(m_cloud_normals_id_);
     m_viewer_.addPointCloudNormals<Point ,Normal>(m_cloud_filtered_,
         m_cloud_normals_, m_level_, m_scale_, m_cloud_normals_id_);
-    // allow viewer to run visualization loop for 50ms, and force redraw
-    m_viewer_.spinOnce(100, true);
+    // allow viewer to run visualization loop for 20ms, and force redraw
+    m_viewer_.spinOnce(20, true);
   }
 };
 
