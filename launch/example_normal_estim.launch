@@ -1,14 +1,22 @@
 <launch>
-  <arg name="host"              default="0"/>
+
+  <arg name="robot_id"          default="jetsonTK1"/>
+  
   <!-- specify VoxelGrid leaf size to downsample input point cloud -->
-  <arg name="leaf_size"         default="0"/>
+  <arg name="leaf_size"         default="0.02"/>
   <arg name="debug"             default="0"/>
   <arg name="example_prefix"    default=""                    unless="$(arg debug)"/>
   <arg name="example_prefix"    default="screen -d -m gdb --args" if="$(arg debug)"/>
   <arg name="zed_namespace"     default="camera"/>
   <arg name="point_cloud_topic" default="$(arg zed_namespace)/point_cloud/cloud_registered"/>
 
-  <include unless="$(arg host)" file="$(find pcl_tutorials)/launch/zed.launch">
+
+  <machine name="$(arg robot_id)" address="10.42.0.179" 
+    env-loader="/home/ubuntu/inv/playground/pcl/src/pcl_tutorials/config/jetson_env_cfg.sh"
+    user="ubuntu" default="false" timeout="5.0"/>
+      
+  <include file="$(find pcl_tutorials)/launch/zed.launch">
+    <arg name="robot_id"        value="$(arg robot_id)"/>
     <arg name="zed_namespace"   value="camera"/>
   </include>
 

@@ -10,6 +10,7 @@
 
 
   <!-- GENERAL ARGUMENTS -->
+  <arg name="robot_id"            default=""/>
   <arg name="zed_namespace"       default="camera"/>
   <arg name="base_frame_id"       default="camera_link"/>
   <!-- ===================================================================== -->
@@ -39,17 +40,19 @@
   <!-- STATIC TRANSFORMATIONS -->
   <node pkg="tf" type="static_transform_publisher" 
         name="base_to_zed_initial"
-        args="$(arg optical_rotate) $(arg base_frame_id) zed_initial_frame 100"/>
+        args="$(arg optical_rotate) $(arg base_frame_id) zed_initial_frame 100"
+        machine="$(arg robot_id)"/>
   
   <node pkg="tf" type="static_transform_publisher"
         name="zed_current_to_left"
-        args="0 0 0 0 0 0 zed_current_frame ZED_left_camera 100"/>
+        args="0 0 0 0 0 0 zed_current_frame ZED_left_camera 100"
+        machine="$(arg robot_id)"/>
 
   <!-- RUN ZED WRAPPER -->
   <group ns="$(arg zed_namespace)">
 
     <node pkg="zed_wrapper" type="zed_wrapper_node" name="zed_wrapper_node" 
-        output="screen">
+        output="screen" machine="$(arg robot_id)">
       <param name="zed_id"                value="$(arg zed_id)" />
 
       <param name="resolution"            value="$(arg zed_resolution)" />
@@ -84,7 +87,7 @@
   <!-- ROS URDF description of the ZED -->
   <param name="zed_description" textfile="$(find zed_wrapper)/urdf/zed.urdf"/>
   <node pkg="robot_state_publisher" type="state_publisher" 
-        name="zed_state_publisher">
+        name="zed_state_publisher" machine="$(arg robot_id)">
     <remap from="robot_description" to="zed_description"/>
   </node>
   <!-- ===================================================================== -->
