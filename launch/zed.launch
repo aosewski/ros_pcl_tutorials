@@ -24,8 +24,8 @@
        '0': NONE, '1': PERFORMANCE, '2': MEDIUM, '3': QUALITY -->
   <arg name="zed_quality"             default="1"/>
   <!-- Select depth sensing mode 
-       '0': FILL, '1': STANDARD -->
-  <arg name="zed_sensing_mode"        default="1"/>
+       '0': STANDARD, '1': FILL -->
+  <arg name="zed_sensing_mode"        default="0"/>
   <!-- Set ZED camera video framerate -->
   <arg name="zed_frame_rate"          default="60"/>
   <!-- Convert 32bit depth in meters to 16bit in millimeters 
